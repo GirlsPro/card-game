@@ -1,0 +1,22 @@
+{
+  "name": "card-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "debug": "tsc -w"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/express": "^4.16.1",
+    "@types/node": "^11.11.2",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
