@@ -5,7 +5,8 @@ interface IQueue<V> {
     dequeue: () => V | null,
     empty: () => boolean,
     full: () => boolean,
-    erase: () => void
+    erase: () => void,
+    concatenate: (queue: Queue<V>) => void
 }
 
 class Queue<VType> implements IQueue<VType> {
@@ -39,6 +40,16 @@ class Queue<VType> implements IQueue<VType> {
         else {
             let newElem = new QueueElem(v, this._tail.next);
             this._tail.next = newElem;
+        }
+    }
+
+    public concatenate(queue: Queue<VType>): void {
+        if (this._tail && queue._tail)
+        {
+            let head = this._tail.next;
+            this._tail.next = queue._tail.next;
+            queue._tail.next = head;
+            this._tail = queue._tail;
         }
     }
 
