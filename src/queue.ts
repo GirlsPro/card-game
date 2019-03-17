@@ -1,7 +1,7 @@
 import { IQueueElem, QueueElem } from './queue-elem';
 
 interface IQueue<V> {
-    enqueue: (v: V) => void,
+    endqueue: (v: V) => void,
     dequeue: () => V | null,
     empty: () => boolean,
     full: () => boolean,
@@ -33,24 +33,29 @@ class Queue<VType> implements IQueue<VType> {
         return this._tail === null;
     }
 
-    public enqueue(v: VType): void {
+    public endqueue(v: VType): void {
         if (this._tail === null) {
             this._tail = new QueueElem(v);
         }
         else {
-            let newElem = new QueueElem(v, this._tail.next);
-            this._tail.next = newElem;
+            this._tail.next = new QueueElem(v, this._tail.next);
+            this._tail = this._tail.next;
         }
     }
 
     public concatenate(queue: Queue<VType>): void {
-        if (this._tail && queue._tail)
-        {
+        if (!queue._tail) {
+            return;
+        }
+
+        if (this._tail) {
             let head = this._tail.next;
             this._tail.next = queue._tail.next;
             queue._tail.next = head;
-            this._tail = queue._tail;
         }
+
+        this._tail = queue._tail;
+        queue._tail = null;
     }
 
     public erase(): void {
@@ -59,6 +64,20 @@ class Queue<VType> implements IQueue<VType> {
 
     public full(): boolean {
         return false;
+    }
+
+    public * getIterator(): Generator  {
+        if (this._tail === null) {
+            return null;
+        }
+
+        let temp = this._tail.next;
+
+        while (temp !== this._tail) {
+            yield this._tail.value;
+            temp = temp.next;
+        }
+        yield temp;
     }
 }
 
