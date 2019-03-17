@@ -9,17 +9,17 @@ interface IQueue<V> {
 }
 
 class Queue<VType> implements IQueue<VType> {
-    private tail: IQueueElem<VType> | null = null;
+    private _tail: IQueueElem<VType> | null = null;
 
     public dequeue(): VType | null {
-        if (this.tail) {
-            let head = this.tail.next;
+        if (this._tail) {
+            let head = this._tail.next;
 
-            if (this.tail === head) {
-                this.tail = null;
+            if (this._tail === head) {
+                this._tail = null;
             }
             else {
-                this.tail.next = head.next;
+                this._tail.next = head.next;
             }
 
             return head.value;
@@ -29,21 +29,21 @@ class Queue<VType> implements IQueue<VType> {
     }
 
     public empty(): boolean {
-        return this.tail === null;
+        return this._tail === null;
     }
 
     public enqueue(v: VType): void {
-        if (this.tail === null) {
-            this.tail = new QueueElem(v);
+        if (this._tail === null) {
+            this._tail = new QueueElem(v);
         }
         else {
-            let newElem = new QueueElem(v, this.tail.next);
-            this.tail.next = newElem;
+            let newElem = new QueueElem(v, this._tail.next);
+            this._tail.next = newElem;
         }
     }
 
     public erase(): void {
-        this.tail = null;
+        this._tail = null;
     }
 
     public full(): boolean {
