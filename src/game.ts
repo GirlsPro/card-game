@@ -49,7 +49,7 @@ class Game {
         /* Data for response */
         const firstPlayerRoundData: IPlayerRoundData = {
             id: Game.firstPlayer.id,
-            cardsAmount: getCollectionLength(firstQueue),
+            cardsAmount: firstQueue.count,
             discardCards: []
         };
         const secondPlayerRoundData: IPlayerRoundData = {
@@ -119,8 +119,8 @@ class Game {
         const size = Deck.DECK_SIZE / 2;
 
         for (let i = 0; i < size; i++) {
-            firstQueue.endqueue(deckIterator.next().value.id);
-            secondQueue.endqueue(deckIterator.next().value.id);
+            firstQueue.enqueue(deckIterator.next().value.id);
+            secondQueue.enqueue(deckIterator.next().value.id);
         }
     }
 
@@ -142,8 +142,8 @@ class Game {
             secondCardId = firstQ.dequeue();
         }
 
-        tableQ.endqueue(firstCardId);
-        tableQ.endqueue(secondCardId);
+        tableQ.enqueue(firstCardId);
+        tableQ.enqueue(secondCardId);
 
         return [firstCardId, secondCardId]
     }
@@ -151,24 +151,13 @@ class Game {
     private static compareCards(firstCardId: number, secondCardId: number): RoundStatuses {
         const firstRank = Deck.getCard(firstCardId).rank;
         const secondRank = Deck.getCard(secondCardId).rank;
-console.log('rank', firstRank, secondRank);
+        console.log('rank', firstRank, secondRank);
         if (firstRank === secondRank) {
             return RoundStatuses.None;
         }
 
         return firstRank > secondRank ? RoundStatuses.First : RoundStatuses.Second;
     }
-}
-
-function getCollectionLength(collection: any): number {
-    const iterator: Generator = collection.getIterator();
-    let count: number = 0;
-
-    while (!iterator.next().done) {
-        count++;
-    }
-
-    return count;
 }
 
 export {

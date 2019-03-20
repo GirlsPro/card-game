@@ -1,7 +1,8 @@
 import { IQueueElem, QueueElem } from './queue-elem';
 
 interface IQueue<V> {
-    endqueue: (v: V) => void,
+    count: number,
+    enqueue: (v: V) => void,
     dequeue: () => V | null,
     empty: () => boolean,
     full: () => boolean,
@@ -10,6 +11,7 @@ interface IQueue<V> {
 }
 
 class Queue<VType> implements IQueue<VType> {
+    public count = 0;
     private _tail: IQueueElem<VType> | null = null;
 
     public dequeue(): VType | null {
@@ -23,6 +25,7 @@ class Queue<VType> implements IQueue<VType> {
                 this._tail.next = head.next;
             }
 
+            this.count--;
             return head.value;
         }
 
@@ -33,7 +36,7 @@ class Queue<VType> implements IQueue<VType> {
         return this._tail === null;
     }
 
-    public endqueue(v: VType): void {
+    public enqueue(v: VType): void {
         if (this._tail === null) {
             this._tail = new QueueElem(v);
         }
@@ -41,6 +44,8 @@ class Queue<VType> implements IQueue<VType> {
             this._tail.next = new QueueElem(v, this._tail.next);
             this._tail = this._tail.next;
         }
+        
+        this.count++;
     }
 
     public concatenate(queue: Queue<VType>): void {
@@ -56,10 +61,13 @@ class Queue<VType> implements IQueue<VType> {
 
         this._tail = queue._tail;
         queue._tail = null;
+
+        this.count += queue.count;
     }
 
     public erase(): void {
         this._tail = null;
+        this.count = 0;
     }
 
     public full(): boolean {
