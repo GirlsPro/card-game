@@ -73,20 +73,6 @@ class Queue<VType> implements IQueue<VType> {
     public full(): boolean {
         return false;
     }
-
-    public * getIterator(): Generator  {
-        if (this._tail === null) {
-            return null;
-        }
-
-        let temp = this._tail.next;
-
-        while (temp !== this._tail) {
-            yield this._tail.value;
-            temp = temp.next;
-        }
-        yield temp;
-    }
 }
 
 export { IQueue, Queue };

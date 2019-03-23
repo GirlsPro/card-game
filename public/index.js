@@ -10,7 +10,7 @@ const resultOutput = document.getElementById('game-result');
 const members = document.getElementsByClassName('member');
 
 restartBtn.onclick = () => {
-    table.innerHTML = '';
+    table.textContent = '';
     resultOutput.hidden = true;
     initGame();
 };
@@ -47,8 +47,29 @@ function startRound() {
     xhr.send();
 }
 
-function play() {
+function play(data) {
+    const {
+        players: [
+            firstMember,
+            secondMember
+        ],
+        roundWinnerId
+    } = data;
+    const firstMemberCards = firstMember.discardCards;
+    const secondMemberCards = secondMember.discardCards;
+    const stepsAmount = firstMemberCards.length;
+    const cardBack = getCard(0);
 
+    // TODO
+    // need delay or animation between steps
+    for (let i = 0; i < stepsAmount; i++) {
+        if (i) {
+            table.innerHTML = cardBack + cardBack; // step
+        }
+        table.innerHTML = getCard(firstMemberCards[i] + 1) + getCard(secondMemberCards[i] + 1); // step
+    }
+    // and need animation of taking cards (according to roundWinnerId)
+    // that's all
 }
 
 function gameOver(winnerId) {
@@ -57,4 +78,8 @@ function gameOver(winnerId) {
     roundBtn.hidden = true;
     resultOutput.textContent = `YOU ${status}!`;
     resultOutput.hidden = false;
+}
+
+function getCard(cardId) {
+    return `<img class="card-img" src="cards/${cardId}.png" alt="deck picture">`;
 }
