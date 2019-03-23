@@ -1,0 +1,80 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Myriad Pro', sans-serif;
+    font-size: 18pt;
+    color: #fff;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    align-items: center;
+    background: #45a173;
+}
+
+.decks-container {
+    display: flex;
+    width: 70%;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.member-container {
+    display: flex;
+    height: 33.3%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-img {
+    height: 120px;
+}
+
+.member-name {
+    padding: 20px;
+}
+
+.action-btn {
+    width: auto;
+    margin: 10px;
+    padding: 15px;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 30px;
+    font: inherit;
+}
+
+.action-btn:hover {
+    border-color: #334d41;
+}
+
+.action-btn:active {
+    border-color: slategrey;
+}
+
+.btn_primary {
+    background: cornflowerblue;
+}
+
+.btn_default {
+    background: floralwhite;
+}
+
+.result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    color: rgb(37,51,110);
+}

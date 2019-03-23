@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Game</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <main>
+        <div class="member-container">
+            <div class="area member">
+                <img class="card-img" src="cards/0.jpg" alt="deck picture">
+            </div>
+            <span class="member-name">COMPUTER</span>
+        </div>
+
+        <div class="decks-container">
+            <div class="area" id="table"></div>
+            <output class="result" id="game-result" hidden></output>
+            <button class="action-btn btn_primary" id="round-btn" hidden>ROUND</button>
+            <button class="action-btn btn_default" id="restart-btn">RESTART</button>
+        </div>
+
+        <div class="member-container">
+            <span class="member-name">YOU</span>
+            <div class="area member">
+                <img class="card-img" src="cards/0.jpg" alt="deck picture">
+            </div>
+        </div>
+    </main>
+
+    <script src="index.js" type="text/javascript"></script>
+</body>
+</html>

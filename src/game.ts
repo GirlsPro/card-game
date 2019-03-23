@@ -151,7 +151,7 @@ class Game {
     private static compareCards(firstCardId: number, secondCardId: number): RoundStatuses {
         const firstRank = Deck.getCard(firstCardId).rank;
         const secondRank = Deck.getCard(secondCardId).rank;
-        console.log('rank', firstRank, secondRank);
+
         if (firstRank === secondRank) {
             return RoundStatuses.None;
         }

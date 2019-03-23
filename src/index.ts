@@ -12,4 +12,4 @@ app.listen(8000);
 app.use(BodyParser.json());
 app.use(Express.static(Path.resolve(rootPath, 'public')));
 
-app.use('/', gameRouter);
+app.use('/api', gameRouter);
