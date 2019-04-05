@@ -63,10 +63,9 @@ class Game {
             roundStatus === RoundStatuses.None
             && !(firstQueue.empty() && secondQueue.empty)
         ) {
-            console.log(roundStatus, firstQueue, secondQueue);
             const [ firstCardId, secondCardId ]: number[] = Game.discard(tableQueue, firstQueue, secondQueue);
-            firstPlayerRoundData.discardCards.push(firstCardId);
-            secondPlayerRoundData.discardCards.push(secondCardId);
+            firstPlayerRoundData.discardCards.push(Deck.getCard(firstCardId).id);
+            secondPlayerRoundData.discardCards.push(Deck.getCard(secondCardId).id);
 
             roundStatus = Game.compareCards(firstCardId, secondCardId);
 

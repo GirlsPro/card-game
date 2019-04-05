@@ -47,7 +47,7 @@ function startRound() {
     xhr.send();
 }
 
-function play(data) {
+async function play(data) {
     const {
         players: [
             firstMember,
@@ -59,25 +59,53 @@ function play(data) {
     const secondMemberCards = secondMember.discardCards;
     const stepsAmount = firstMemberCards.length;
     const cardBack = getCard(0);
+    const queue = [];
 
-    // TODO
-    // need delay or animation between steps
     for (let i = 0; i < stepsAmount; i++) {
-        if (i) {
-            table.innerHTML = cardBack + cardBack; // step
-        }
-        table.innerHTML = getCard(firstMemberCards[i] + 1) + getCard(secondMemberCards[i] + 1); // step
+        i && queue.push(cardBack + cardBack);
+        queue.push(getCard(firstMemberCards[i] + 1) + getCard(secondMemberCards[i] + 1));
     }
-    // and need animation of taking cards (according to roundWinnerId)
-    // that's all
+    queue.push(resultText(roundWinnerId));
+
+    restartBtn.disabled = true;
+    roundBtn.disabled = true;
+
+    await delayQueue(
+        queue,
+        html => table.innerHTML = html,
+        1000
+    );
+
+    restartBtn.disabled = false;
+    roundBtn.disabled = false;
+}
+
+function delayQueue(queue, handler, delay) {
+    return new Promise(async resolve => {
+
+        handler(queue[0]);
+        for (let i = 1; i < queue.length; i++) {
+            await new Promise(resolve => {
+                const id = setTimeout(() => {
+                    handler(queue[i]);
+                    clearTimeout(id);
+                    resolve();
+                }, delay);
+            });
+        }
+
+        resolve();
+    });
 }
 
 function gameOver(winnerId) {
-    const status = Number(members[0].dataset.memberId) === winnerId ? 'LOSE' : 'WIN';
-
     roundBtn.hidden = true;
-    resultOutput.textContent = `YOU ${status}!`;
+    resultOutput.textContent = resultText(winnerId);
     resultOutput.hidden = false;
+}
+
+function resultText(winnerId) {
+    return `YOU ${Number(members[0].dataset.memberId) === winnerId ? 'LOSE' : 'WIN'}`;
 }
 
 function getCard(cardId) {

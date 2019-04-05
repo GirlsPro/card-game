@@ -30,8 +30,9 @@ class Deck {
     public static init(): void {
         for (let i = 0; i < Deck.DECK_SIZE; i++) {
             Deck._deck[i] = new Card(
-                Math.floor(i / Deck.SUIT_CARDS_AMOUNT),
-                i % Deck.SUIT_CARDS_AMOUNT
+                i,
+                i % Deck.SUIT_CARDS_AMOUNT,
+                Math.floor(i / Deck.SUIT_CARDS_AMOUNT)
             );
         }
     }

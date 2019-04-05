@@ -10,12 +10,10 @@ gameRouter.get('/init', (_req, res) => {
 });
 
 gameRouter.get('/round', (_req, res) => {
-    const data = {
+    res.send({
         ...Game.round(),
         ...Game.isGameOver()
-    };
-    console.log(data);
-    res.send(data);
+    });
 });
 
 export { gameRouter };
