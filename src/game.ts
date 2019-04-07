@@ -4,7 +4,7 @@ import { IQueue, Queue } from './queue';
 
 interface IGameResult {
     isEnd: boolean,
-    winnerId?: number
+    winnerId: number | null
 }
 
 interface IPlayerRoundData {
@@ -14,7 +14,7 @@ interface IPlayerRoundData {
 }
 
 interface IRoundResult {
-    roundWinnerId: number,
+    roundWinnerId: number | null,
     players: IPlayerRoundData[]
 }
 
@@ -54,16 +54,16 @@ class Game {
         };
         const secondPlayerRoundData: IPlayerRoundData = {
             id: Game.secondPlayer.id,
-            cardsAmount: Deck.DECK_SIZE - firstPlayerRoundData.cardsAmount,
+            cardsAmount: secondQueue.count,
             discardCards: []
         };
-        let roundWinnerId: number;
+        let roundWinnerId: number | null = null;
         /* Data for response */
         while (
             roundStatus === RoundStatuses.None
             && !(firstQueue.empty() && secondQueue.empty)
         ) {
-            const [ firstCardId, secondCardId ]: number[] = Game.discard(tableQueue, firstQueue, secondQueue);
+            const [ firstCardId, secondCardId ] = Game.discard(tableQueue, firstQueue, secondQueue);
             firstPlayerRoundData.discardCards.push(Deck.getCard(firstCardId).id);
             secondPlayerRoundData.discardCards.push(Deck.getCard(secondCardId).id);
 
@@ -78,7 +78,7 @@ class Game {
             firstQueue.concatenate(tableQueue);
             roundWinnerId = Game.firstPlayer.id;
         }
-        else {
+        else if (roundStatus === RoundStatuses.Second) {
             secondQueue.concatenate(tableQueue);
             roundWinnerId = Game.secondPlayer.id;
         }
@@ -95,13 +95,15 @@ class Game {
     public static isGameOver(): IGameResult {
         const firstQueue: IQueue<number> = Game.firstPlayer.queue;
         const secondQueue: IQueue<number> = Game.secondPlayer.queue;
-        const gameOverResult: IGameResult = { isEnd: true };
+        const gameOverResult: IGameResult = {
+            isEnd: true,
+            winnerId: null
+        };
 
         if (!firstQueue.empty() && !secondQueue.empty()) {
-            return { isEnd: false };
+            gameOverResult.isEnd = false;
         }
-
-        if (!Game.firstPlayer.queue.empty()) {
+        else if (!Game.firstPlayer.queue.empty()) {
             gameOverResult.winnerId = Game.firstPlayer.id;
         }
         else if (!Game.secondPlayer.queue.empty()) {
@@ -123,9 +125,9 @@ class Game {
         }
     }
 
-    private static discard(tableQ: IQueue<number>, firstQ: IQueue<number>, secondQ: IQueue<number>): number[] {
-        let firstCardId: any;
-        let secondCardId: any;
+    private static discard(tableQ: IQueue<number>, firstQ: IQueue<number>, secondQ: IQueue<number>): [number, number] {
+        let firstCardId: number = 0;
+        let secondCardId: number = 0;
 
         if (!firstQ.empty()) {
             firstCardId = firstQ.dequeue();

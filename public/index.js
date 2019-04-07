@@ -105,6 +105,9 @@ function gameOver(winnerId) {
 }
 
 function resultText(winnerId) {
+    if (winnerId === null) {
+        return 'DRAW GAME';
+    }
     return `YOU ${Number(members[0].dataset.memberId) === winnerId ? 'LOSE' : 'WIN'}`;
 }
 

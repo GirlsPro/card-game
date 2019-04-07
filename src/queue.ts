@@ -3,7 +3,7 @@ import { IQueueElem, QueueElem } from './queue-elem';
 interface IQueue<V> {
     count: number,
     enqueue: (v: V) => void,
-    dequeue: () => V | null,
+    dequeue: () => V,
     empty: () => boolean,
     full: () => boolean,
     erase: () => void,
@@ -14,22 +14,21 @@ class Queue<VType> implements IQueue<VType> {
     public count = 0;
     private _tail: IQueueElem<VType> | null = null;
 
-    public dequeue(): VType | null {
-        if (this._tail) {
-            let head = this._tail.next;
+    public dequeue(): VType {
+        if (this._tail === null) {
+            throw new Error("Queue is empty");
+        }
+        let head = this._tail.next;
 
-            if (this._tail === head) {
-                this._tail = null;
-            }
-            else {
-                this._tail.next = head.next;
-            }
-
-            this.count--;
-            return head.value;
+        if (this._tail === head) {
+            this._tail = null;
+        }
+        else {
+            this._tail.next = head.next;
         }
 
-        return null;
+        this.count--;
+        return head.value;
     }
 
     public empty(): boolean {
